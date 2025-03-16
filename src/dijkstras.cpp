@@ -1,5 +1,4 @@
 #include "dijkstras.h"
-#include <algorithm>
 
 struct Node {
     int vertex, weight;
@@ -10,7 +9,7 @@ struct Node {
 vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous) {
     int n = G.numVertices;
     vector<int> distances(n, INF);
-    previous.resize(n, -1);
+    previous.assign(n, -1);
     vector<bool> visited(n, false);
 
     priority_queue<Node, vector<Node>, greater<Node>> pq;
@@ -51,10 +50,14 @@ vector<int> extract_shortest_path(const vector<int>& distances, const vector<int
         path.push_back(v);
     }
 
-    reverse(path.begin(), path.end());
+    vector<int> reversed_path;
+    for (int i = path.size() - 1; i >= 0; --i) {
+        reversed_path.push_back(path[i]);
+    }
 
-    return path;
+    return reversed_path;
 }
+
 
 void print_path(const vector<int>& path, int total) {
     for (size_t i = 0; i < path.size(); ++i) {
