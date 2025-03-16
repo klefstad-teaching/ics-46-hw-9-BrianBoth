@@ -100,12 +100,12 @@ void load_words(set<string>& word_list, const string& file_name) {
 
 void print_word_ladder(const vector<string>& ladder) {
     if (ladder.empty()) {
-        cout << "No word mapping." << endl;
+        cout << "No word ladder found." << endl;
         return;
     } 
 
     for (const string& word : ladder) {
-        cout << word << endl;
+        cout << "Word ladder found: " << word " " << endl;
     }
 }
 
