@@ -1,4 +1,5 @@
 #include "dijkstras.h"
+#include <algorithm>
 
 struct Node {
     int vertex, weight;
@@ -50,12 +51,9 @@ vector<int> extract_shortest_path(const vector<int>& distances, const vector<int
         path.push_back(v);
     }
 
-    vector<int> reversed_path;
-    for (int i = path.size() - 1; i >= 0; --i) {
-        reversed_path.push_back(path[i]);
-    }
+    reverse(path.begin(), path.end());
 
-    return reversed_path;
+    return path;
 }
 
 void print_path(const vector<int>& path, int total) {
