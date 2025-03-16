@@ -4,10 +4,7 @@ void error(string word1, string word2, string msg) {
     cout << "error with " << word1 << ", " << word2 << msg << endl;
 }
 
-bool edit_distance_within(const std::string& str1, const std::string& str2, int d) {
-    if (str1.size() != str2.size()) {
-        return false;
-    }
+bool compare_equal_length(const std::string& str1, const std::string& str2, int d) {
     int count = 0;
     for (size_t i = 0; i < str1.size(); ++i) {
         if (str1[i] != str2[i]) {
@@ -18,6 +15,43 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
     }
     return true;
 }
+
+bool compare_different_length(const std::string& longer, const std::string& shorter, int d) {
+    int count = 0;
+    size_t i = 0, j = 0;
+    while (i < longer.size() && j < shorter.size()) {
+        if (longer[i] == shorter[j]) {
+            ++j;
+        } else {
+            if (++count > d) {return false;}
+        }
+        ++i;
+    }
+    if (count + (longer.size() - i) > d) {
+        return false;
+    }
+    return true;
+}
+
+bool edit_distance_within(const std::string& str1, const std::string& str2, int d) {
+    int len1 = str1.size(), len2 = str2.size();
+
+    if (std::abs(len1 - len2) > 1) {
+        return false;
+    }
+
+    if (len1 == len2) {
+        return compare_equal_length(str1, str2, d);
+    }
+
+    if (len1 > len2) {
+        return compare_different_length(str1, str2, d);
+    } else {
+        return compare_different_length(str2, str1, d);
+    }
+}
+
+
 
 bool is_adjacent(const string& word1, const string& word2) {
     int len1 = word1.size(), len2 = word2.size();
@@ -104,9 +138,11 @@ void print_word_ladder(const vector<string>& ladder) {
         return;
     } 
 
+    cout << "Word ladder found: " << " ";
     for (const string& word : ladder) {
-        cout << "Word ladder found: " << word << " " << endl;
+        cout << word << " ";
     }
+    cout << endl;
 }
 
 #define my_assert(e) {cout << #e << ((e) ? " passed": " failed") << endl;}
